@@ -1,0 +1,23 @@
+
+ 
+<div class="range-slider grad" style='width: 100%; height:20px; --min:0; --max:100; --step:20; --value:0; --text-value:"0"; --suffix:"%"'>
+    <input {{ attributes.addClass(classes) }} oninput="this.parentNode.style.setProperty('--value',this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify((+this.value).toLocaleString()))">
+  <output></output>
+  <div class='range-slider__progress'></div>
+   <ul class="range-labels" style="display:none">
+    <li class="active selected">Not Flexible</li>
+    <li>Partiality Flexible</li>
+    <li>Fully Flexible</li>
+  
+  </ul> 
+   <ul class="secure" style="display:none">
+    <li class="active selected">Not Confident</li>
+    <li> Confident</li>
+    <li>Fully Confident</li>
+  
+  </ul> 
+</div>
+{{ attributes.name}}
+
+
+

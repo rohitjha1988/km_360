@@ -1,0 +1,276 @@
+<?php
+use Drupal\user\UserInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+use Drupal\webform\Entity\Webform;
+use Drupal\webform\Entity\WebformSubmission;
+use Drupal\user\Entity\User;
+use Drupal\webform\WebformSubmissionForm;
+use Drupal\node\Entity\Node;
+use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Routing\TrustedRedirectResponse;
+use Drupal\Core\Mail\MailManagerInterface;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Database\Database;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Ajax\AjaxResponse;
+
+
+function assess_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+	
+  if ($form_id =='webform_submission_general_question_add_form' || $form_id =='webform_submission_general_question_security_add_form' || $form_id =='webform_submission_general_question_analytics_add_form' || $form_id =='webform_submission_general_question_mobility_add_form' || $form_id =='webform_submission_general_question_flexibility_add_form' ) {
+  $form['actions']['submit']['#value'] = t('PROCEED');
+  }
+
+  if($form_id == 'webform_submission_productivity_collaborations_add_form'){
+  if ($form['progress']['#current_page'] === 'fifth'){
+  foreach (array_keys($form['actions']) as $action) {
+  if ($action != 'wizard_prev' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+    
+    $form['actions'][$action]['#submit'][] = 'assess_form_submit';
+  }
+  }
+  }
+  }
+   elseif($form_id == 'webform_submission_mobility_add_form'){ 
+   if($form['progress']['#current_page'] === 'fifth'){
+  foreach (array_keys($form['actions']) as $action) {
+    if ($action != 'wizard_prev' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+      
+      $form['actions'][$action]['#submit'][] = 'assess_mobilty_form_submit';
+    }
+    }
+    }
+  }
+  elseif($form_id == 'webform_submission_security_and_compliance_add_form'){  
+    if($form['progress']['#current_page'] === 'fifth'){
+   foreach (array_keys($form['actions']) as $action) {
+     if ($action != 'wizard_prev' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+       
+       $form['actions'][$action]['#submit'][] = 'assess_security_and_compliance_form_submit';
+     }
+     }
+     }
+   }
+
+   elseif($form_id == 'webform_submission_flexibility_efficiency_and_susta_add_form'){  
+    if($form['progress']['#current_page'] === 'fifth'){
+   foreach (array_keys($form['actions']) as $action) {
+     if ($action != 'wizard_prev' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+       
+       $form['actions'][$action]['#submit'][] = 'assess_flexibility_efficiency_and_compliance_form_submit';
+     }
+     }
+     }
+   }
+
+   elseif($form_id == 'webform_submission_analytics_and_intelligence_add_form'){  
+    if($form['progress']['#current_page'] === 'fifth'){
+   foreach (array_keys($form['actions']) as $action) {
+     if ($action != 'wizard_prev' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+       
+       $form['actions'][$action]['#submit'][] = 'assess_analytics_and_intelligence_form_submit';
+     }
+     }
+     }
+   }
+
+}  
+  
+
+function assess_form_submit(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
+//die('jjjj');
+$a = $form_state->getValue('select_the_statements_that_reflect_your_workplace_and_operations'); 
+$b = $form_state->getValue('what_percentage_of_your_workforce_when_working_remotely_have_acc'); 
+$c = $form_state->getValue('are_you_struggling_with_lots_of_manual_and_repetitive_tasks_asso'); 
+$d = $form_state->getValue('from_0_to_100_do_you_have_a_seamless_work_experience_where_you_c'); 
+$e = $form_state->getValue('to_what_extend_supports_your_servicedesk_your_customer_s_needs_'); 
+
+$aval = (count($a) *20) ;
+$bval = (100-$b);
+$cval = (count($a) *17) ;
+$dval = $d ;
+$eval = (count($e) *17) ;
+
+$total = ($aval + $bval + $cval + $dval + $eval)/5;
+
+
+
+
+$msg = $aval . " " . $bval . " " . $cval . " " . $dval . " " . $eval ;
+
+  print "<pre>"; 
+    print_r($total);
+// //   print_r($b);
+//    //print_r($c);
+     print "<pre>";
+
+//$count = count($a);
+ //kint($cval);
+ // die('kkkk');
+
+
+ $response = new TrustedRedirectResponse('/drupal-8.9.16/results?score='.$total.'&category=productivity-collaborations');
+ $form_state->setResponse($response);
+
+}
+function assess_mobilty_form_submit(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  //die('jjjj');
+  $ma = $form_state->getValue('what_percentage_of_your_workforce_when_working_remotely_have_acc'); 
+  $mb = $form_state->getValue('what_percentage_of_your_workforce_have_seamless_access_to_the_in'); 
+  $mc = $form_state->getValue('when_your_workforce_is_working_remotely_is_their_it_still_manage'); 
+  $md = $form_state->getValue('employees_in_my_company_have_the_ability_to_'); 
+  $me = $form_state->getValue('are_there_certain_departmental_processes_or_systems_that_can_t_b'); 
+  
+
+  // if ($mc == yes){die('100');
+  //   $mmcval = 100;
+  // }else {die('99');
+  //   $mmcval = 0;
+  // };
+  $maval = $ma ;
+  $mbval = $mb;
+  $mcval = $mc;
+  $mdval = (count($md) *-17) ;
+  $meval = (count($me) *-17) ;
+  
+  $total2 = ($maval + $mbval + $mcval + $mdval + $meval)/5;
+  
+  
+  
+  
+  $mmsg = $maval . " " . $mbval . " " . $mcval . " " . $mdval . " " . $meval ;
+  
+  //   print "<pre>"; 
+  //     print_r($mmsg);
+  // // //   print_r($b);    
+  // //    //print_r($c);
+  //      print "<pre>";
+  
+  // //$count = count($a);
+  //  //kint($cval);
+  //   die('kkkk');
+  
+  
+   $response = new TrustedRedirectResponse('/drupal-8.9.16/results?score='.$total2.'&category=mobility');
+   $form_state->setResponse($response);
+  
+  }
+  function assess_security_and_compliance_form_submit(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
+    //die('jjjj');
+    $sa = $form_state->getValue('it_is_the_backbone_of_most_businesses_today_how_resilient_and_se'); 
+    $sb = $form_state->getValue('do_you_have_a_recovery_plan_in_place_that_will_allow_you_to_retu'); 
+    $sc = $form_state->getValue('data_are_one_of_the_most_valuable_assets_of_your_company_on_a_sc'); 
+    $sd = $form_state->getValue('how_are_you_protecting_your_employees_customers_facilities_and_i'); 
+    $se = $form_state->getValue('how_mature_would_you_rate_your_endpoint_and_security_protection_'); 
+    
+  
+    // if ($mc == yes){die('100');
+    //   $mmcval = 100;
+    // }else {die('99');
+    //   $mmcval = 0;
+    // };
+    $saval = $sa ;
+    $sbval = $sb;
+    $scval = $sc;
+    $sdval = $sd;
+    $seval = $se;
+    
+    $total3 = ($saval + $sbval + $scval + $sdval + $seval)/5;
+    
+    
+    
+    
+    $smsg = $saval . " " . $sbval . " " . $scval . " " . $sdval . " " . $seval ;
+    
+      //  print "<pre>"; 
+      //    print_r($smsg);
+    
+    
+      //     print "<pre>";
+    
+    // //$count = count($a);
+    //  //kint($cval);
+     //die('kkkk');
+    
+    
+     $response = new TrustedRedirectResponse('/drupal-8.9.16/results?score='.$total3.'&category=security_and_compliance');
+     $form_state->setResponse($response);
+    
+    }
+    function assess_flexibility_efficiency_and_compliance_form_submit(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
+     // die('jjjj');
+      $fa = $form_state->getValue('on_a_scale_of_1_lowest_to_5_highest_how_flexible_is_your_it_infr'); 
+      $fb = $form_state->getValue('which_of_the_following_statement_is_true_'); 
+      $fc = $form_state->getValue('from_0_to_100_how_much_do_you_agree_with_this_statement_communic'); 
+      $fd = $form_state->getValue('would_you_like_to_track_all_the_costs_associated_with_scanning_p'); 
+      $fe = $form_state->getValue('which_of_these_activities_are_currently_manual_and_repetitive_ta'); 
+      
+    
+      // if ($mc == yes){die('100');
+      //   $mmcval = 100;
+      // }else {die('99');
+      //   $mmcval = 0;
+      // };
+      $faval = ($fa*25);
+      $fbval = (count($fb) *-20) ;
+      $fcval = $fc;
+      $fdval = $fd;
+      $feval = (count($fe) *-17) ;
+      
+      $total4 = ($faval + $fbval + $fcval + $fdval + $feval)/5;
+      
+      
+      
+      
+      $fmsg = $faval . " " . $fbval . " " . $fcval . " " . $fdval . " " . $feval ;
+      
+      
+      
+      
+       $response = new TrustedRedirectResponse('/drupal-8.9.16/results?abc='.$total4.'&category=flexibility-efficiency');
+       $form_state->setResponse($response);
+      
+      }
+  function assess_analytics_and_intelligence_form_submit(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
+    //die('jjjj');
+    $aa = $form_state->getValue('which_areas_of_your_business_do_you_struggle_with_'); 
+    $ab = $form_state->getValue('do_you_actively_monitor_your_sensitive_data_such_as_personal_or_'); 
+    $ac = $form_state->getValue('do_you_actively_monitor_manage_key_applications_and_their_usage_'); 
+    $ad = $form_state->getValue('do_you_proactively_monitor_manage_your_it_environment_and_any_co'); 
+    $ae = $form_state->getValue('what_precentage_of_your_physical_infrastructure_or_operations_ar'); 
+    
+    $aaval = (count($aa)*-25);
+    $abval = $ab;
+    $acval = $ac;
+    $adval = $ad ;
+    $aeval = $ae;
+    
+    $total5 = ($aaval + $abval + $acval + $adval + $aeval)/5;
+    
+    
+    
+    
+    $amsg = $aaval . " " . $abval . " " . $acval . " " . $adval . " " . $aeval ;
+    
+          
+     $response = new TrustedRedirectResponse('/drupal-8.9.16/results?score='.$total5.'&category=analytics-intelligence');
+     $form_state->setResponse($response);
+    
+    }
+    function assess_page_attachments(array &$page) {
+     unset($result1);
+     $result1 = [];
+      $result1 =  explode("&",$_SERVER['QUERY_STRING']); 
+
+ 
+
+
+  $result2 =  explode("=",$result1[0]);
+  $result3 =  explode("=",$result1[1]);
+  
+  //print($result2[1].' '.$result3[1]);die;
+  //$page['url_string'] = $result[1];
+  $page['#attached']['drupalSettings']['myname'] = $result2[1];
+  $page['#attached']['drupalSettings']['myname2'] = $result3[1];
+    }

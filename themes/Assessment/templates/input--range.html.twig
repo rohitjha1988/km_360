@@ -1,0 +1,57 @@
+
+{# Fliexibility and efficiency : On a scale of 1 to 5 range field#}
+{% if attributes.name == 'on_a_scale_of_1_lowest_to_5_highest_how_flexible_is_your_it_infr' %}
+<div class="col-lg-12 higest">
+<ul class="range-labels">
+ <li class="active selected">Not <br>Flexible</li>
+  <li>&nbsp;</li>
+    <li>Partial <br>Flexible</li>
+   
+	    <li>&nbsp;</li>
+    <li>Fully <br>Flexible</li>
+</ul><br>
+
+  <div class="range" id="range1">
+  <input type="range" {{ attributes.addClass(classes) }} oninput="this.parentNode.style.setProperty('--value',this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify((+this.value).toLocaleString()))">
+ <output></output>
+</div>
+
+
+</div>
+
+<!--b>{{ attributes.name}}</b><br/>
+<b>{{ attributes.id}}</b-->
+
+{# Security and compliance : Data are one range form field #}
+
+{% elseif attributes.name == 'data_are_one_of_the_most_valuable_assets_of_your_company_on_a_sc' %}
+
+<div class="col-lg-12 higestt">
+<ul class="range-labelss">
+ <li class="active selected">Not <br>Confident</li>
+  <li>&nbsp;</li>
+    <li>Confident</li>
+   
+	    <li>&nbsp;</li>
+    <li>Fully <br>Confident</li>
+</ul><br>
+
+  <div class="ranges" id="range2">
+  <input {{ attributes.addClass(classes) }} oninput="this.parentNode.style.setProperty('--value',this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify((+this.value).toLocaleString()))">
+ <output></output>
+</div>
+
+
+</div>
+
+{# General Range field#}
+{% else %}
+
+<div class="range-slider grad" style='width: 100%; height:20px;--min:0; --max:100; --step:20; --value:0; --text-value:"0"; --suffix:"%"'>
+  <input {{ attributes.addClass(classes) }} oninput="this.parentNode.style.setProperty('--value',this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify((+this.value).toLocaleString()))">
+  <output></output>
+  <div class='range-slider__progress'></div>
+
+
+</div>
+{% endif %}

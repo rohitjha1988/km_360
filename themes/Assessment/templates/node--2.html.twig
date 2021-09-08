@@ -1,0 +1,711 @@
+{#
+/**
+ * @file
+ * Bartik's theme implementation to display a node.
+ *
+ * Available variables:
+ * - node: The node entity with limited access to object properties and methods.
+ *   Only method names starting with "get", "has", or "is" and a few common
+ *   methods such as "id", "label", and "bundle" are available. For example:
+ *   - node.getCreatedTime() will return the node creation timestamp.
+ *   - node.hasField('field_example') returns TRUE if the node bundle includes
+ *     field_example. (This does not indicate the presence of a value in this
+ *     field.)
+ *   - node.isPublished() will return whether the node is published or not.
+ *   Calling other methods, such as node.delete(), will result in an exception.
+ *   See \Drupal\node\Entity\Node for a full list of public properties and
+ *   methods for the node object.
+ * - label: (optional) The title of the node.
+ * - content: All node items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given child element.
+ * - author_picture: The node author user entity, rendered using the "compact"
+ *   view mode.
+ * - metadata: Metadata for this node.
+ * - date: (optional) Themed creation date field.
+ * - author_name: (optional) Themed author name field.
+ * - url: Direct URL of the current node.
+ * - display_submitted: Whether submission information should be displayed.
+ * - attributes: HTML attributes for the containing element.
+ *   The attributes.class element may contain one or more of the following
+ *   classes:
+ *   - node: The current template type (also known as a "theming hook").
+ *   - node--type-[type]: The current node type. For example, if the node is an
+ *     "Article" it would result in "node--type-article". Note that the machine
+ *     name will often be in a short form of the human readable label.
+ *   - node--view-mode-[view_mode]: The View Mode of the node; for example, a
+ *     teaser would result in: "node--view-mode-teaser", and
+ *     full: "node--view-mode-full".
+ *   The following are controlled through the node publishing options.
+ *   - node--promoted: Appears on nodes promoted to the front page.
+ *   - node--sticky: Appears on nodes ordered above other non-sticky nodes in
+ *     teaser listings.
+ *   - node--unpublished: Appears on unpublished nodes visible only to site
+ *     admins.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - content_attributes: Same as attributes, except applied to the main
+ *   content tag that appears in the template.
+ * - author_attributes: Same as attributes, except applied to the author of
+ *   the node tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ * - teaser: Flag for the teaser state. Will be true if view_mode is 'teaser'.
+ * - page: Flag for the full page state. Will be true if view_mode is 'full'.
+ * - readmore: Flag for more state. Will be true if the teaser content of the
+ *   node cannot hold the main body content.
+ * - logged_in: Flag for authenticated user status. Will be true when the
+ *   current user is a logged-in member.
+ * - is_admin: Flag for admin user status. Will be true when the current user
+ *   is an administrator.
+ *
+ * @see template_preprocess_node()
+ */
+#}
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'clearfix',
+  ]
+%}
+{{ attach_library('bartik/classy.node') }}
+<article{{ attributes.addClass(classes) }}>
+  <header>
+    {{ title_prefix }}
+      {% if label and not page %}
+      <h2{{ title_attributes.addClass('node__title') }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h2>
+    {% endif %}
+    {{ title_suffix }}
+    {% if display_submitted %}
+      <div class="node__meta">
+
+      
+        {{ author_picture }}
+        <span{{ author_attributes }}>
+          {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+        </span>
+        {{ metadata }}
+      </div>
+    {% endif %}
+  </header>
+  <div{{ content_attributes.addClass('node__content', 'clearfix') }}>
+       
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+ {{ content }}
+
+<!-- Start Pie Chart Section -->
+
+ 
+
+        <section class="wow fadeIn no-padding margin-30px-tb sm-margin-70px-top" style="visibility: visible; animation-name: fadeIn;     margin-bottom: 90px;">
+            <div class="container"> 
+                <div class="row align-items-center">
+ 
+                    <div class="col-12 col-lg-6 wow fadeInRight last-paragraph-no-margin text-lg-left sm-padding-15px-lr text-center" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInRight;">
+
+ 
+
+                        <div class='mydiv bg-light-blue' id='other' style="display: block;">
+                            <div class="text-left padding-five-all sm-padding-two-all width-100 text-lg-left text-center">
+                                <h6 class="margin-20px-bottom"><span class="font-weight-700 text-blue text-uppercase">KONICA MINOLTA'S DX360&#176
+                                DIGITAL MATURITY ASSESSMENT </span></h6>
+                                <div class="text-mdm font-weight-400 text-black padding-10px-bottom"> With our free online DX360&#176 Digital Maturity Assessment, find out if you have the tools and procedures in place to enhance your digital transformation strategy and grow your business whilst boosting its resilience in a digital-first economy.</div>
+ 
+                                <div class="text-mdm font-weight-400 text-black padding-10px-bottom">This assessment has 25 questions, split by 5 categories and it should take less than 10 minutes. Once completed, you will instantly receive a customised report to your email with recommendations on how to improve your digital maturity model score.</div>
+
+ 
+
+                                <div class="text-mdm font-weight-400 text-black padding-10px-bottom">Every corner of our world is digitised, it's becoming easier for organisations to connect with customers, partners, and employees. Technology has gone from a supporting role to centre stage:  drastically affecting areas like productivity, collaboration, connection, and customer engagement. As it becomes more powerful and prevalent, however, the path forward is becoming more complex.</div><br>
+                              <a class="btn btn-large btn-blue btn-rounded newcta margin-30px-bottom js-anchor-link curvebtn" >Download Report Now <i class="ti-angle-right font-weight-600"></i>   </a>
+                              <a class="btn btn-large btn-blue btn-rounded newcta margin-30px-bottom js-anchor-link curvebtn sec" >Make an Appointment <i class="ti-angle-right font-weight-600"></i>   </a>
+                              </div>
+                        </div>
+
+ 
+
+              
+                    </div>
+
+ 
+
+                    <div class="col-12 col-lg-6 text-center wow fadeInLeft" style="visibility: visible; animation-name: fadeInLeft;">
+               <h6 class="margin-20px-bottom"><span class="font-weight-700 text-blue text-uppercase padlefts" >CONTINUE YOUR JOURNEY </span></h6>
+                  <div class="component csstransforms">
+				
+				<!-- Start Nav Structure -->
+			
+				<div class="cn-wrapper opened-nav" id="cn-wrapper">
+					<ul>
+						<li><div class="flexd"><h6>FLEXIBILITY, EFFICIENCY, AND SUSTAINABILITY</h6><br>
+						<a href="#">Start Now </a></div></li>
+						<li><div class="flexd analyresults"><h6>ANALYTICS AND INTELLIGENCE</h6><br>
+						<a href="#">Start Now </a></div></li>
+						<li><div class="produrelf"><h6>PRODUCTIVITY AND COLLABORATION</h6><span>48%</span><br><br>
+						<a href="#">REVIEW</a></div></li>
+						<li><div class="flexd securityrestls"><h6>SECURITY AND COMPLIANCE</h6><br>
+						<a href="#">Start Now </a></div></li>
+						<li><div class="mpbolityrelst"><h6>MOBILITY</h6><span>62%</span><br><br>
+						<a href="#">REVIEW</a></div></li>
+						
+					 </ul>
+				</div>
+				<!-- End of Nav Structure -->
+			</div>
+                    </div>
+
+ 
+
+                </div>
+            </div>
+            <div id="benefits-section"></div>
+        </section>
+        <!-- End Pie Chart Section -->
+
+      
+      
+       <section class="wow fadeIn no-padding margin-30px-tb sm-margin-70px-top" style="visibility: visible; animation-name: fadeIn;margin-bottom: 0px">
+            <div class="container"> 
+                <div class="row align-items-center">
+ 
+                    <div class="col-12 col-lg-6 wow fadeInRight last-paragraph-no-margin text-lg-left sm-padding-15px-lr text-center" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInRight;">
+                        
+                             <div class="text-justify padding-five-all sm-padding-two-all width-100">
+                                <h6 class="margin-20px-bottom"><span class="font-weight-700 text-blue text-uppercase">YOUR DIGITAL MATURITY </span></h6>
+                                <div class="text-mdm font-weight-400 text-black padding-10px-bottom"> With our free online DX360&#176 Digital Maturity Assessment, find out if you have the tools and procedures in place to enhance your digital transformation strategy and grow your business whilst boosting its resilience in a digital-first economy.With our free online DX360&#176 Digital Maturity Assessment, find out if you have the tools and procedures in place to enhance your digital transformation strategy and grow your business whilst boosting its resilience in a digital-first economy.</div>
+                                  <div class="text-mdm font-weight-400 text-black padding-10px-bottom"> With our free online DX360&#176 Digital Maturity Assessment, find out if you have the tools and procedures in place to enhance your digital transformation strategy and grow your business whilst boosting its resilience in a digital-first economy.</div>
+                                 <div class="text-mdm font-weight-400 text-black padding-10px-bottom"> With our free online DX360&#176 Digital Maturity Assessment, find out if you have the tools and procedures in place to enhance your digital transformation strategy and grow your business whilst boosting its resilience in a digital-first economy.</div>
+                                  
+                                 
+ 
+                         
+                              </div>
+                        
+                        
+                    </div>
+          <div class="col-12 col-lg-6 wow fadeInRight last-paragraph-no-margin text-lg-left sm-padding-15px-lr text-center" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInRight;">
+                        
+                           <div class="mainpiechart">
+<div class="texts">
+<ul>
+
+  <li><img src="themes/Assessment/images/emeg.png"></li>
+  <li><img src="themes/Assessment/images/digitals.png"></li>
+    <li><img src="themes/Assessment/images/intergre.png"></li>
+  <li><img src="themes/Assessment/images/transh.png"></li>
+</ul>
+
+</div>
+  <div class="main-menus">themes/Assessment/images/
+  
+
+    
+    <div for="menu" class="socrecssd">OVERALL SCORE<br><span>100%</span><br>Maturity Level 3</div>
+    <ul>
+    
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Carbon</a></li>
+      <li><a href="https://codepen.io/sagall/pen/rmogGq" target="_blanc">Calc</a></li>
+      <li><a href="#">Contacts</a></li>
+    </ul>
+  </div>
+</div>
+                        
+                        
+                    </div>
+                     </div>
+                 </div>
+      </section>
+      
+       <section class="sectincaler wow fadeIn no-padding margin-30px-tb sm-margin-70px-top" style="visibility: visible; animation-name: fadeIn;margin-bottom: 0px">
+       <div class="container">
+       
+           <div class="row justify-content-center">
+      <div class="col-12 col-lg-8 col-md-11 text-center sm-margin-30px-bottom">
+        <h6 class="margin-20px-bottom"><span class="font-weight-700 text-blue"> Book Your Consultation with an expert now </span></h6>
+      </div>
+    </div>
+          <div class="row">
+         
+              <div class="col-md-4">
+                  
+                  <div class="col-contens">
+                  
+                  <div class="contentbox">
+                      <h4>Step 1
+                      </h4>
+                      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                      
+                      </div> <div class="contentbox">
+                      <h4>Step 2
+                      </h4>
+                      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                      
+                      </div> <div class="contentbox">
+                      <h4>Step 3
+                      </h4>
+                      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                      
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-8">
+                  
+                  <div class="colslide1">
+                  <div class="row">
+                  <div class="col-md-6">
+            <div class="calendar-wrapper" id="calendar-wrapper"></div>
+                      
+                      </div>
+                        <div class="col-md-6">
+                            <div class="timeSlot">
+                                <h5>Time Select</h5>
+                            
+                            <div class="SlotList row">
+                                <div class="col-md-6">
+                               <div class="SelectDate">11:00 AM - 11:30 AM</div>
+                                </div>
+                                 <div class="col-md-6">
+                               <div class="SelectDate">11:00 AM - 11:30 AM</div>
+                                </div>
+                                </div> <div class="SlotList row">
+                                <div class="col-md-6">
+                               <div class="SelectDate">11:00 AM - 11:30 AM</div>
+                                </div>
+                                 <div class="col-md-6">
+                               <div class="SelectDate">11:00 AM - 11:30 AM</div>
+                                </div>
+                                </div> <div class="SlotList row">
+                                <div class="col-md-6">
+                               <div class="SelectDate">11:00 AM - 11:30 AM</div>
+                                </div>
+                                 <div class="col-md-6">
+                               <div class="SelectDate">11:00 AM - 11:30 AM</div>
+                                </div>
+                                </div> <div class="SlotList row">
+                                <div class="col-md-6">
+                               <div class="SelectDate">11:00 AM - 11:30 AM</div>
+                                </div>
+                                 <div class="col-md-6">
+                               <div class="SelectDate">11:00 AM - 11:30 AM</div>
+                                </div>
+                                </div> <div class="SlotList row">
+                                <div class="col-md-6">
+                               <div class="SelectDate">11:00 AM - 11:30 AM</div>
+                                </div>
+                                 <div class="col-md-6">
+                               <div class="SelectDate">11:00 AM - 11:30 AM</div>
+                                </div>
+                                </div>
+                                <div class="SlotList row">
+                                    <div class="col-lg-12 infotrmayionscal"><i class="fa fa-info-circle" aria-hidden="true"></i> All times are in (UTC+01.00)Amsterdam,Berlin, Rome</div></div>
+                            </div>
+                      </div>  <div class="col-md-12">
+              
+              <div class="nnbtn">
+
+                  <a class="btn btn-large btn-blue btn-rounded newcta margin-30px-bottom js-anchor-link curvebtn"  id="Nexts">Next <i class="ti-angle-right font-weight-600"></i>   </a>
+                       </div>
+              </div></div>
+                      </div>
+                  
+                  <div class="colslide2">
+                    <div class="Formse">
+                        
+                        <h4>Add Your Details</h4>
+            <div class="row">
+            <div class="col-md-6">
+                
+                <div class="Inp2">
+                <input type="text" placeholder=" Name *">
+                </div>
+                </div>
+                 <div class="col-md-6">
+                
+                <div class="Inp2">
+                <input type="text" placeholder="Email *">
+                </div>
+                </div>
+                 <div class="col-md-6">
+                
+                <div class="Inp2">
+                <input type="text" placeholder="Phone Number">
+                </div>
+                </div>
+                 <div class="col-md-6">
+                
+                <div class="Inp2">
+                <input type="text" placeholder="Address">
+                </div>
+                </div>
+                  <div class="col-md-12">
+                
+               <div class="Inp2 text-left">
+              <p>Please let us Know if You have any special requests. Thank You.</p>
+                <textarea class="form-control" placeholder="Notes"></textarea>
+                </div>
+                        
+                      
+                  <div class="Inp2 text-left gdpr">
+              <label class="containerts"> &nbsp; GDPR Privacy Notice
+  <input type="checkbox">
+  <span class="checkmark"></span>
+</label>
+                          <p>Please tick the box below to opt in to recive Process Flows,Newsletters and Updates. You may choose not to opt in,we will then only use data collected from this form to contact you in relation to this request.</p>
+                </div>
+                      
+
+                </div>
+               
+                
+                
+                </div>
+            </div>
+                           <div class="col-md-12">
+                
+                <div class="Inp2">
+
+                     <a class="btn btn-large btn-blue btn-rounded newcta margin-30px-bottom js-anchor-link curvebtn" data-toggle="modal" data-target="#exampleModal"  id="Books">Book <i class="ti-angle-right font-weight-600"></i>   </a>
+                </div>
+                </div>
+                  </div>
+                  
+               
+          </div>
+           
+         
+           </div>
+          </div>
+      </section>
+
+      
+      <!---- pop up start here---->
+      
+           <div class="modal fade mynewmodel" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+     
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="Moalsx">
+          <h4>Download Your Report
+</h4>
+       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+    and scrambled it to make a type specimen book. It has survived not only five centuries.</p>
+
+<p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum pa:
+and more recently with desktop publishing software like Ipsum.</p>
+            <div class="Forms">
+            <div class="row">
+            <div class="col-md-6">
+                
+                <div class="Inp">
+                <input type="text" placeholder="First Name">
+                </div>
+                </div>
+                 <div class="col-md-6">
+                
+                <div class="Inp">
+                <input type="text" placeholder="Last Name">
+                </div>
+                </div>
+                 <div class="col-md-6">
+                
+                <div class="Inp">
+                <input type="text" placeholder="Company Name">
+                </div>
+                </div>
+                 <div class="col-md-6">
+                
+                <div class="Inp">
+                <input type="text" placeholder="Business Email Address">
+                </div>
+                </div>
+                 <div class="col-md-6">
+                
+                <div class="Inp">
+                            <a class="btn btn-large btn-blue btn-rounded newcta margin-30px-bottom js-anchor-link curvebtn" data-toggle="modal" data-target="#exampleModal" >View sample Report <i class="ti-angle-right font-weight-600"></i>   </a>
+                         </div>
+                </div>
+                 <div class="col-md-6">
+                
+                <div class="Inp">
+                          <a class="btn btn-large btn-blue btn-rounded newcta margin-30px-bottom js-anchor-link curvebtn" data-toggle="modal" data-target="#exampleModal" >Get Your Result <i class="ti-angle-right font-weight-600"></i>   </a>
+       
+
+                    
+                </div>
+                </div>
+                
+                
+                </div>
+            </div>
+          </div>
+      </div>
+    
+    </div>
+  </div>
+</div>
+      
+      
+ <!-- start slider section -->
+<section class="p-0 main-slider mobile-height wow fadeIn">
+  <div class="swiper-full-screen swiper-container h-100 w-100 white-move">
+    <div class="swiper-wrapper">
+      <!-- start slider item -->
+      <div class="swiper-slide">
+        <div class="row m-0 justify-content-center">
+          <div class="col-12 col-md-6 cover-background height-400px sm-height-300px margin-50px-tb sm-no-margin" style="background-image:url('themes/Assessment/images/slider_01.jpg');"></div>
+          <div class="col-12 col-md-5 d-flex align-items-center height-400px sm-height-250px">
+            <div class="text-left padding-five-all sm-padding-two-all width-100 text-lg-left text-center">
+              <h6 class="margin-20px-bottom"><span class="font-weight-700 text-blue alt-font"> RETHINKING THE WORLD OF WORK </span></h6>
+              <span class="text-sm font-weight-400 text-black">With technological, social, environmental and generational shifts, ‘work’ can no longer be defined as a physical space one goes from 9 to 5. Instead, work is anywhere, anytime.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- end slider item -->
+      <!-- start slider item -->
+      <div class="swiper-slide">
+        <div class="row m-0 justify-content-center">
+          <div class="col-12 col-md-6 cover-background height-400px sm-height-300px margin-50px-tb sm-no-margin" style="background-image:url('themes/Assessment/images/slider_02.jpg');"></div>
+          <div class="col-12 col-md-5 d-flex align-items-center height-400px sm-height-250px">
+            <div class="text-left padding-five-all sm-padding-two-all width-100 text-lg-left text-center">
+              <h6 class="margin-20px-bottom"><span class="font-weight-700 text-blue alt-font">Manage changes in business </span></h6>
+              <span class="text-sm font-weight-400 text-black">With working models of remote and hybrid working here to stay, businesses must consider how to support mobile working environments. This means ensuring agile teams can flexibly scale up on a project-to-project basis, utilising data to optimise decision making.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- end slider item -->
+      <!-- start slider item -->
+      <div class="swiper-slide">
+        <div class="row m-0 justify-content-center">
+          <div class="col-12 col-md-6 cover-background height-400px sm-height-300px margin-50px-tb sm-no-margin" style="background-image:url('themes/Assessment/images/slider_03.jpg');"></div>
+          <div class="col-12 col-md-5 d-flex align-items-center height-400px sm-height-250px">
+            <div class="text-left padding-five-all sm-padding-two-all width-100 text-lg-left text-center">
+              <h6 class="margin-20px-bottom"><span class="font-weight-700 text-blue alt-font">EMBRACING DIGITAL</span></h6>
+              <span class="text-sm font-weight-400 text-black">This changing world of work, however, brings with it risks and opportunities that need to be navigated.  Businesses like yours now need to look more closely at your digital maturity level, to ensure you can confidently and securely prepare for, and optimise, your ideal workplace of tomorrow.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- end slider item -->
+    </div>
+    <!-- start slider pagination -->
+    <div class="swiper-pagination swiper-pagination-square swiper-pagination-white swiper-full-screen-pagination d-none"></div>
+    <div class="half-circle_r half-circle_sr swiper-button-next swiper-next-style1"> </div>
+    <div class="half-circle_l half-circle_sl swiper-button-prev swiper-next-style1 "> </div>
+    <!-- end slider pagination -->
+    <!-- end slider pagination -->
+  </div>
+</section>
+<!-- end slider section -->
+
+    <!-- start digital transformation section -->
+<section class="wow fadeIn bg-light-blue">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8 col-md-11 text-center sm-margin-30px-bottom">
+        <h6 class="margin-20px-bottom"><span class="font-weight-700 text-blue"> DIGITAL BUSINESS TRANSFORMATION IS KEY TO FUTURE SUCCESS </span></h6>
+      </div>
+    </div>
+    <div class="row">
+      <!-- feature box item-->
+      <div class="col-12 col-md-6 sm-margin-five-bottom last-paragraph-no-margin wow fadeInUp">
+        <div class="feature-box">
+          <div class="content sm-content">
+
+            <div class="iconstyle wow fadeInUp text-center md-margin-30px-bottom sm-margin-15px-bottom">
+              <img src="themes/Assessment/images/digitalfirst.jpg" alt="">
+            </div>
+             <div class="text-large font-weight-700 text-capitalize text-blue margin-10px-bottom md-margin-5px-bottom">Choose the right technology </div>
+
+            <p class="width-85 mx-auto md-width-100 text-black">45% of executives don’t think their company has the right technology to implement a digital transformation<sup>1</sup></p>
+           
+          </div>
+        </div>
+      </div>
+      <!-- end feature box item-->
+      <!-- feature box item-->
+      <div class="col-12 col-md-6 sm-margin-five-bottom last-paragraph-no-margin wow fadeInUp" data-wow-delay="0.2s">
+        <div class="feature-box">
+          <div class="content sm-content">
+
+            <div class="iconstyle wow fadeInUp text-center md-margin-30px-bottom sm-margin-15px-bottom">
+              <img src="themes/Assessment/images/digitaltwo.jpg" alt="">
+            </div>
+			 <div class="text-large font-weight-700 text-capitalize text-blue margin-10px-bottom md-margin-5px-bottom">Be prepared for digital disruptions</div>
+            <p class="width-85 mx-auto md-width-100 text-black">87% of companies think digital will disrupt their
+ industry, but only 44% are prepared for potential
+ digital disruption<sup>2</sup></p>
+           
+          </div>
+        </div>
+      </div>
+      <!-- end feature box item-->
+      <!-- feature box item-->
+      <div class="col-12 col-md-6 sm-margin-five-bottom last-paragraph-no-margin wow fadeInUp" data-wow-delay="0.4s">
+        <div class="feature-box">
+          <div class="content sm-content">
+ <div class="iconstyle wow fadeInUp text-center md-margin-30px-bottom sm-margin-15px-bottom">
+              <img src="themes/Assessment/images/digitalthree.jpg" alt="">
+            </div>
+<div class="text-large font-weight-700 text-capitalize text-blue margin-10px-bottom md-margin-5px-bottom">Digital or done </div>
+
+            <p class="width-85 mx-auto md-width-100 text-black"> Digital or done Accelerate customer interaction
+Over 77% of companies are dependent on digital products or operations<sup>3</sup></p>
+            
+          </div>
+        </div>
+      </div>
+      <!-- end feature box item-->
+      <!-- feature box item-->
+      <div class="col-12 col-md-6 sm-margin-five-bottom last-paragraph-no-margin wow fadeInUp" data-wow-delay="0.4s">
+        <div class="feature-box">
+          <div class="content sm-content">
+ <div class="iconstyle wow fadeInUp text-center md-margin-30px-bottom sm-margin-15px-bottom">
+              <img src="themes/Assessment/images/digitalfour.jpg" alt="">
+            </div>
+<div class="text-large font-weight-700 text-capitalize text-blue margin-10px-bottom md-margin-5px-bottom">Accelerate Digital Interaction </div>
+
+            <p class="width-85 mx-auto md-width-100 text-black">
+Intelligent systems will drive 70% of your customer
+ engagements by 2022<sup>4</sup></p>
+            
+          </div>
+        </div>
+      </div>
+      <!-- end feature box item-->
+    </div>
+  </div>
+  <div id="trusted-advisor"></div>
+</section>
+<!-- end digital transformation section -->
+
+
+
+<!-- start clients logo section -->
+<section>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-12 col-md-10 margin-five-bottom md-margin-40px-bottom sm-margin-30px-bottom text-center last-paragraph-no-margin">
+        <h6 class="margin-20px-bottom"><span class="font-weight-700 text-blue">YOUR TRUSTED ADVISOR DIGITAL INNOVATION </span></h6>
+        <p>We work hard to innovate and deliver quality products and services that help our customers pursue their digital agendas. Our dedication to providing our customers with exceptional experiences is proven with over 75 awards and certifications, recognising our efforts in digital transformation and digital transformation consulting. This is further enhanced by our collaboration with recognised global partners.</p>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+
+      <div class="yta">
+        <ul class="wow fadeIn" style="visibility: visible; animation-name: fadeIn;">
+          <li><img src="themes/Assessment/images/top_employer_united_kingdom_2020.png" alt=""/></li>
+          <li><img src="themes/Assessment/images/smart-workplace-vision.png" alt=""/></li>
+          <li><img src="themes/Assessment/images/iso_20000-1.png" alt=""/></li>
+          <li><img src="themes/Assessment/images/iso-27001.png" alt=""/></li>
+          <li><img src="themes/Assessment/images/comptia-logo.png" alt=""/></li>
+        </ul>
+        <ul class="wow fadeIn" style="visibility: visible; animation-name: fadeIn;">
+          <li><img src="themes/Assessment/images/servicenow-logo.png" alt=""/></li>
+          <li><img src="themes/Assessment/images/microsoft_partner.png" alt=""/></li>
+          <li><img src="themes/Assessment/images/itil.png" alt=""/></li>
+          <li><img src="themes/Assessment/images/prince2.png" alt="PRINCE2"/></li>
+          <li><img src="themes/Assessment/images/iso_20000-1-full.png" alt="ISO"/></li>
+        </ul>
+      </div>
+
+  
+    </div>
+
+
+  </div>
+  </div>
+</section>
+<!-- end clients logo section -->
+  </div>
+  <script type="text/javascript" src="themes/Assessment/js/classy/jquery.js"></script>
+<script type="text/javascript" src="themes/Assessment/js/classy/modernizr.js"></script>
+<script type="text/javascript" src="themes/Assessment/js/classy/bootstrap.bundle.js"></script>
+<script type="text/javascript" src="themes/Assessment/js/classy/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="themes/Assessment/js/classy/skrollr.min.js"></script>
+<script type="text/javascript" src="themes/Assessment/js/classy/smooth-scroll.js"></script>
+<script type="text/javascript" src="themes/Assessment/js/classy/jquery.appear.js"></script>
+<!-- menu navigation -->
+<script type="text/javascript" src="themes/Assessment/js/classy/bootsnav.js"></script>
+<script type="text/javascript" src="themes/Assessment/js/classy/jquery.nav.js"></script>
+<!-- animation -->
+<script type="text/javascript" src="themes/Assessment/js/classy/wow.min.js"></script>
+<!-- page scroll -->
+<script type="text/javascript" src="themes/Assessment/js/classy/page-scroll.js"></script>
+<!-- swiper carousel -->
+<script type="text/javascript" src="themes/Assessment/js/classy/swiper.min.js"></script>
+<!-- counter -->
+
+<!-- themes/Assessment/images loaded -->
+<script type="text/javascript" src="themes/Assessment/js/classy/imagesloaded.pkgd.min.js"></script>
+<!-- pull menu -->
+<script type="text/javascript" src="themes/Assessment/js/classy/classie.js"></script>
+<script type="text/javascript" src="themes/Assessment/js/classy/hamburger-menu.js"></script>
+<!-- counter  -->
+<script type="text/javascript" src="themes/Assessment/js/classy/counter.js"></script>
+
+
+<script type="text/javascript" src="themes/Assessment/js/classy/main.js"></script>
+<script type="text/javascript" src="themes/Assessment/js/classy/calendar.min.js"></script>
+
+      <script>
+      $("#Nexts").click(function(){
+          
+          $(".colslide2").show()
+          $(".colslide1").hide()
+      })
+      </script>
+      
+    <script type="text/javascript">
+      var config = `
+function selectDate(date) {
+  $('#calendar-wrapper').updateCalendarOptions({
+    date: date
+  });
+  console.log(calendar.getSelectedDate());
+}
+
+var defaultConfig = {
+  weekDayLength: 1,
+  date: '08/05/2021',
+  onClickDate: selectDate,
+  showYearDropdown: true,
+  startOnMonday: true,
+};
+ var calendar = $('#calendar-wrapper').calendar(defaultConfig);
+console.log(calendar.getSelectedDate());
+`;
+      eval(config);
+    
+      flask.updateCode(config);
+      flask.onUpdate((code) => {
+        try {
+          eval(code);
+        } catch(e) {}
+      });
+    </script>
+</article>

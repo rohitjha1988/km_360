@@ -1,0 +1,52 @@
+<?php
+use Drupal\user\UserInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+use Drupal\webform\Entity\Webform;
+use Drupal\webform\Entity\WebformSubmission;
+use Drupal\user\Entity\User;
+use Drupal\webform\WebformSubmissionForm;
+use Drupal\node\Entity\Node;
+use Drupal\Core\Block\BlockBase;
+
+use Drupal\Core\Mail\MailManagerInterface;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Database\Database;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Ajax\AjaxResponse;
+
+//  * @param $form
+//  * @param \Drupal\Core\Form\FormStateInterface $form_state
+//  * @param $form_id
+ 
+
+
+
+function assessment_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+//  foreach (array_keys($form['actions']) as $action) {
+//     if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+//       $form['actions'][$action]['#submit'][] = 'custom_assessment_form_submit';
+//     }
+//   }
+// }
+   if($form_id == 'webform_submission_general_question_add_form'){
+    $form['actions']['submit']['#value'] = t('START NOW');
+   }
+  }
+// function assessment_form_submit(array $form, &$form_state)
+// {die('jjjj');
+//   $webform = \Drupal\webform\Entity\Webform::load('webform_submission_productivity_collaboration_add_form');  //webform id is the webform name
+//  if ($webform->hasSubmissions()) {
+//    $query = \Drupal::entityQuery('webform_submission')
+//      ->condition('webform_id', 'webform_submission_productivity_collaboration_add_form');
+//    $result = $query->execute();
+//    $submission_data = [];
+//    foreach ($result as $item) {
+//      $submission = \Drupal\webform\Entity\WebformSubmission::load($item);
+//      $submission_data = $submission->getData();
+//    }
+//   }
+//   print "<pre>";
+//   print_r($submission_data);
+//   print "<pre>";die;
+//    }

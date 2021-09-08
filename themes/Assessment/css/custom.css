@@ -1,0 +1,215 @@
+#header{
+    background-color:#fff !important;
+    background-image: -webkit-linear-gradient(top, #fff 0%, #fff 100%) !important;
+    background-image: linear-gradient(to bottom, #fff 0%, #fff 100%) !important;
+
+    -webkit-box-shadow: 0 2px 10px rgba(57, 63, 72, 0.3);
+    -moz-box-shadow: 0 2px 10px rgba(57, 63, 72, 0.3);
+    box-shadow: 0 2px 10px rgba(57, 63, 72, 0.3);
+    position:fixed;
+    height:70px;
+}
+
+
+.layout-container{
+    max-width:100% !important;
+}
+
+.main-content{
+   width:100% ;
+}
+
+.main-content .section{
+    padding:0 !important;
+}
+
+.layout-main {
+    margin-top: 0px !important;
+    margin-bottom: 40px;
+    padding-top: 50px;
+}
+
+/* Product Collabration css*/ 
+.cnt-right{
+    background-color: #f9f9f9;;
+}
+
+.cnt-right form{
+    padding:15px;
+}
+
+.cnt-right .fieldset-legend, .cnt-right .js-form-type-range label, .cnt-right .webform-button--previous{
+    display: none;
+}
+
+.cnt-right .form-type-checkbox{
+    padding: 7px 15px;
+    border: 1px solid #c5c5c5;
+    border-radius: 8px;
+    display: block;
+    min-height: 62px;
+    margin-bottom: 1.3rem !important; 
+}
+
+.cnt-right .form-type-checkbox:hover{
+    border: 1px solid #cea100;
+    box-shadow: 0 0 17px 0 rgb(0 0 0 / 9%);
+}
+
+.cnt-right .form-type-checkbox:last-child{
+    margin-bottom: 0rem !important; 
+  
+}
+
+.cnt-right .form-type-checkbox input[type=checkbox], input[type=radio]{
+    width: 35px;
+    height: 35px;
+    display: inline-block;
+    float:left;
+    margin-right: 20px;
+}
+
+.cnt-right .form-item label, .cnt-right .form-wrapper .label {
+    /*font-size: 0.929em;*/
+    color: #000;
+    display: table-cell;
+    height: 38px;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+.cnt-right .form-actions {
+    text-align: right;
+}
+
+.cnt-right .form-actions input{
+    position: absolute;
+    bottom:20px;
+    right:20px;
+}
+
+.bg-yellow .form-actions input{
+    position: absolute;
+    bottom:20px;
+    left:20px;
+}
+
+
+.bg-yellow .form-type-checkbox, .bg-yellow .form-type-range input, .bg-yellow .webform-button--next, .bg-yellow .webform-button--submit, .cnt-right .form-type-range label, .cnt-right .form-actions:first-child,
+.bg-mobility .form-type-range input, .bg-mobility .form-type-range label, .bg-mobility fieldset, .cnt-right .webform-element-description,
+.bg-analtics .form-type-range input, .bg-analtics .form-type-range label, .bg-analtics fieldset, .cnt-right .webform-element-description, .bg-analtics webform-button--next
+{
+    display:none !important;
+}
+
+
+.bg-yellow .fieldset-legend, .bg-yellow  label{
+    color: #fff;
+    font-size: 28px;
+    padding-left: 15px;
+    display: inherit;
+    padding-right: 15px;
+    font-weight: 500;
+}
+
+.cnt-right .form-type-range{
+    margin:15rem 0 12.5rem 0;
+}
+.bg-yellow .button{
+    background-color: #fff;
+    color: #cea100;
+    border-color:  #cea100;
+    border:2px solid #cea100 !important;
+    margin-left: 15px !important;
+    padding: .8em 2em;
+}
+.bg-yellow .button:hover, .bg-yellow .button:focus, .bg-yellow .button:active{
+    background-color:transparent;
+    color: #fff;
+    border:2px solid #fff !important;
+    padding: .8em 2em;
+}
+
+.cnt-right .button{
+    background-color: #06c;
+    color: #fff;
+    border-color:  #06c;
+    border:2px solid #06c !important;
+    margin-left: 15px !important;
+    padding: .8em 2em;
+}
+.cnt-right .button:hover, .cnt-right .button:focus, .cnt-right .button:active{
+    background-color:transparent;
+    color: #06c;
+    border:2px solid #06c;
+    padding: .8em 2em;
+}
+
+
+.cnt-right .fieldset-wrapper{
+    padding:10px;
+}
+
+.prod-section .form-type-range output{
+    border: 1px solid #cea100;
+    background: #cea100;
+}
+
+/* Product Collabration css*/ 
+
+
+/* Mobility css*/ 
+
+.bg-mobility{
+    background-color: #C0167B;
+}
+
+.bg-mobility .form-type-select, .bg-mobility .webform-button--next{
+   display:none; 
+}
+
+.bg-mobility p{
+    color: #fff;
+    font-size: 28px;
+    padding-left: 15px;
+    display: inherit;
+    padding-right: 15px;
+    font-weight: 500;
+}
+/* Mobility css*/ 
+
+
+.webform-progress-tracker.progress-tracker{
+    width: 75%;
+    position: absolute;
+    bottom: 10px;
+}
+
+.webform-progress-tracker .progress-step.is-active .progress-marker, .webform-progress-tracker .progress-step.is-active:hover .progress-marker{
+    background-color: #cea100;
+}
+
+.progress-title{
+    display: none;
+}
+
+.progress-marker{
+    box-shadow: 0 2px 10px rgb(57 63 72 / 30%);
+    border: 2px solid #fff;
+
+}
+
+.webform-progress-tracker .progress-step .progress-marker, .webform-progress-tracker .progress-step:hover .progress-marker{
+    background-color: #e8e8e8;
+    color:#a2a2a2;
+}
+
+.webform-progress-tracker .progress-step.is-active .progress-marker, .webform-progress-tracker .progress-step.is-active:hover .progress-marker,
+.webform-progress-tracker .progress-step.is-complete .progress-marker, .webform-progress-tracker .progress-step.is-complete:hover .progress-marker, .webform-progress-tracker .progress-step.is-complete::after
+{
+    color:#fff;
+}
+
+.webform-progress-tracker.progress-tracker li:last-child{
+display:none;
+}
